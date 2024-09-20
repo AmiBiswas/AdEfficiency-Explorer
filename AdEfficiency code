@@ -1,0 +1,151 @@
+import pandas as pd
+import numpy as np
+df=pd.read_csv("Advertising Budget and Sales.csv")
+
+df.head(5)
+
+df.drop(columns=['Unnamed: 0'], inplace=True)
+
+df.isnull().sum()
+
+df.rename(columns={'TV Ad Budget ($)': 'TV Ad Budget'}, inplace=True)
+df.rename(columns={'Radio Ad Budget ($)': 'Radio Ad Budget'}, inplace=True)
+df.rename(columns={'Newspaper Ad Budget ($)': 'Newspaper Ad Budget'}, inplace=True)
+df.rename(columns={'Sales ($)': 'Sales'}, inplace=True)
+df.info()
+
+features = ['TV Ad Budget', 'Radio Ad Budget', 'Newspaper Ad Budget']
+target = 'Sales'
+
+x=df[features]
+y=df[target]
+
+
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
+
+
+# Split the data into training and testing sets
+x = df[features]
+y = df[target]
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+
+# Scale the features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+
+
+# Initialize and train the Decision Tree Classifier
+model = LinearRegression()
+model.fit(X_train, y_train)
+# Make predictions
+y_pred = model.predict(X_test)
+y_pred
+
+
+
+# compute the RMSE MAPE MAE MSE Rsquare of our predictions
+
+print("MAPE=",np.sqrt(metrics.mean_absolute_percentage_error(y_test, y_pred)))
+print("MAE=",np.sqrt(metrics.mean_absolute_error(y_test, y_pred)))
+print("MSE=",np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+print("RMSE=",np.sqrt(metrics.root_mean_squared_error(y_test, y_pred)))
+print("Rsquare= {:.0f}%".format(metrics.r2_score(y_test, y_pred)*100))
+
+MAPE= 0.3898569815051569
+MAE= 1.2086176884407078
+MSE= 1.7815996615334502
+RMSE= 1.3347657702883493
+Rsquare= 90%
+
+
+
+
+import statsmodels.api as sm
+# Add a constant to the independent variables matrix
+X = sm.add_constant(x)
+# Fit the model
+model = sm.OLS(y, X)
+results = model.fit()
+results.summary()
+
+
+
+corr_matrix = df.corr().abs()
+corr_matrix
+
+
+import matplotlib.pyplot as plt
+plt.scatter(df['Sales'], df['Newspaper Ad Budget'])
+# Add title and labels
+plt.title('Sample Scatter Plot')
+plt.xlabel('Sales')
+plt.ylabel('Newspaper Ad Budget')
+# Show plot
+plt.show()
+
+
+
+
+                                                                   Polynomial Regression
+
+
+
+import numpy as np
+import pandas as pd
+
+# import module to calculate model perfomance metrics
+from sklearn import metrics
+
+# Import libraries for Polynomial regression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+
+
+
+from sklearn.preprocessing import PolynomialFeatures
+# PolynomialFeatures (prepreprocessing)
+poly = PolynomialFeatures(degree=3)
+# X_poly = poly.fit_transform(X)
+# train_test_split(X_poly , y)
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly = poly.fit_transform(X_test)
+X_train_poly
+
+
+
+# Linear Regression Model
+linreg = LinearRegression()
+# fit the model to the training data (learn the coefficients)
+linreg.fit(X_train_poly, y_train)
+
+
+
+y_pred_poly = linreg.predict(X_test_poly)
+y_pred_poly
+
+
+# compute the RMSE MAPE MAE MSE Rsquare of our predictions
+print("MAPE=",np.sqrt(metrics.mean_absolute_percentage_error(y_test, y_pred_poly)))
+print("MAE=",np.sqrt(metrics.mean_absolute_error(y_test, y_pred_poly)))
+print("MSE=",np.sqrt(metrics.mean_squared_error(y_test, y_pred_poly)))
+print("RMSE=",np.sqrt(metrics.root_mean_squared_error(y_test, y_pred_poly)))
+print("Rsquare= {:.0f}%".format(metrics.r2_score(y_test, y_pred_poly)*100))
+
+MAPE= 0.1877341529786489
+MAE= 0.623443425552923
+MSE= 0.5427415675039107
+RMSE= 0.7367099615886232
+Rsquare= 99%
+
+
+by the r2 value and error calculation',polynomial regression is the best fit there is some non linearity in the model
+
